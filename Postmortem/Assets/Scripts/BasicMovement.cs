@@ -6,11 +6,17 @@ public class BasicMovement : MonoBehaviour {
 
     int frames = 0;
     int time = 0;
+    //player max horizontal speed
     float playerMaxSpeed = 0.1f;
+    //player acceleration 
     float playerAccel = 0.01f;
+    //player horizontal speed
     float playerSpeed = 0.0f;
+    //player max jump velocity
     float playerMaxJump = 0.0f;
+    //player jump velocity
     float playerJump = 0.0f;
+    //player specifc gravity
     float playerFall = 0.0f;
 
     bool playerGrounded = true;
@@ -122,6 +128,7 @@ public class BasicMovement : MonoBehaviour {
         }
         else
         {
+            //need to change this to some collision based thing to get the char to jump off terrain 
             if (transform.position.y <= 0)
             {
                 playerJump = 0.0f;
