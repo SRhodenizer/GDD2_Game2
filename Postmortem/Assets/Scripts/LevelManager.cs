@@ -60,13 +60,14 @@ public class LevelManager : MonoBehaviour {
         {
             //sets up the level's terrain
             GameObject bg = Instantiate(background);//makes the background image
-            bg.transform.localScale = new Vector3(Screen.width / Screen.dpi, Screen.height / Screen.dpi, 0);//makes it fit screen
+            bg.transform.position = new Vector3(bg.transform.position.x,bg.transform.position.y, 9);//makes it fit screen
+            bg.transform.localScale = new Vector3(Screen.width /2.5f/ Screen.dpi, Screen.height / Screen.dpi, 0);//makes it fit screen
 
             //hard code the terrain positions
-            terrainLocations.Add(new Vector3(-(Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi)));//bottom left corner
-            terrainLocations.Add(new Vector3(-(Screen.width / 3 / Screen.dpi), -(Screen.height / 2 / Screen.dpi)));//middle of the screen
-            terrainLocations.Add(new Vector3((Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi)));//middle of the screen
-            terrainLocations.Add(new Vector3((Screen.width / 3 / Screen.dpi), -(Screen.height / 2 / Screen.dpi)));//middle of the screen
+            terrainLocations.Add(new Vector3(-(Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi),1));
+            terrainLocations.Add(new Vector3(-(Screen.width / 3 / Screen.dpi), -(Screen.height / 2 / Screen.dpi),1));
+            terrainLocations.Add(new Vector3((Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi),1));
+            terrainLocations.Add(new Vector3((Screen.width / 3 / Screen.dpi), -(Screen.height / 2 / Screen.dpi),1));
 
             //hard code the terrain scales 
             //terrainScale.Add(new Vector3(.75f, .75f, .75f));
