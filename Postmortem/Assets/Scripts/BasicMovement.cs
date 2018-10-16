@@ -2,7 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+    *Script for handeling player movement and terrain collision detection
+    * Coded by Kevin Lin and Stephen Rhodenizer 
+    * GDD2 - Game 2 - Postmortem
+    */
+
 public class BasicMovement : MonoBehaviour {
+
+    //list of all the current terrain
+    List<GameObject> terrainList;
 
     int frames = 0;
     int time = 0;
@@ -24,6 +33,10 @@ public class BasicMovement : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
+        //gets the terrain locations from the level manager
+        LevelManager lvlMng = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+        terrainList = lvlMng.platforms;
 
     }
 
@@ -121,15 +134,29 @@ public class BasicMovement : MonoBehaviour {
                 }
 
             }
-
-
-
-
         }
         else
         {
+
+            foreach (GameObject platform in terrainList)
+            {
+                if (AABBCollide(gameObject, platform) == true)
+                {
+                    playerJump = 0.0f;
+                    playerGrounded = true;
+                    playerMaxJump = 0.25f;
+                    playerFall = 0.0f;
+                    break;
+                }
+                else
+                {
+                    playerFall -= 0.01f;
+                    playerJump = playerFall;
+                }
+            }
+
             //need to change this to some collision based thing to get the char to jump off terrain 
-            if (transform.position.y <= 0)
+            /*if (transform.position.y <= 0)
             {
                 playerJump = 0.0f;
                 playerGrounded = true;
@@ -140,19 +167,31 @@ public class BasicMovement : MonoBehaviour {
             {
                 playerFall -= 0.01f;
                 playerJump = playerFall;
-            }
+            }*/
 
         }
 
-
-
-
-
-
-        
         transform.position += new Vector3(playerSpeed,playerJump,0.0f);
         frames++;
     }
-    
+
+    //AABB collision detection
+    public bool AABBCollide(GameObject g1, GameObject g2)
+    {
+
+        bool result = false;
+        //sets bounds of the game objects that may or may not be colliding
+        Bounds bounds1 = g1.GetComponent<SpriteRenderer>().bounds;
+        Bounds bounds2 = g2.GetComponent<SpriteRenderer>().bounds;
+
+        //uses AABB logic to determine if the objects are colliding 
+        if (bounds1.min.x < bounds2.max.x && bounds1.max.x > bounds2.min.x && bounds1.min.y < bounds2.max.y && bounds1.max.y > bounds2.min.y)
+        {
+            result = true;
+        }
+
+        return result;
+    }
+
 
 }
