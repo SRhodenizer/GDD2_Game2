@@ -31,10 +31,12 @@ public class LevelManager : MonoBehaviour {
     int terrainNum = 5;//the amount of terrain blocks we want, for tests 2
     List<Vector3> terrainLocations = new List<Vector3>();//list of locations for the terrain in the level
     List<Vector3> terrainScale = new List<Vector3>();//list of all the terrain scales 
+    Vector3 playerStart = new Vector3(); //starting point for the player
 
     public List<GameObject> platforms = new List<GameObject>();//a list for storing made terrain
 
     List<GameObject> clones = new List<GameObject>(); //empty game object variable to put instantiated things for deletion
+    public List<GameObject> lives = new List<GameObject>();//list of the life markers for the player 
 
     //player variable
     public GameObject playerPrefab;
@@ -59,12 +61,20 @@ public class LevelManager : MonoBehaviour {
             if (player.transform.position.x  > camMain.transform.position.x + camMain.pixelWidth / Screen.dpi / 2)
             {
                 camMain.transform.position = new Vector3(camMain.transform.position.x + .1f, camMain.transform.position.y, camMain.transform.position.z);
+                foreach (GameObject life in lives)//moves the lives on screen
+                {
+                    life.transform.position = new Vector3(life.transform.position.x + .1f, life.transform.position.y, life.transform.position.z);
+                }
             }
 
             //moves left if player backtracks
             if (player.transform.position.x < camMain.transform.position.x - camMain.pixelWidth / Screen.dpi / 2)
             {
                 camMain.transform.position = new Vector3(camMain.transform.position.x - .1f, camMain.transform.position.y, camMain.transform.position.z);
+                foreach (GameObject life in lives)//moves the lives on screen
+                {
+                    life.transform.position = new Vector3(life.transform.position.x - .1f, life.transform.position.y, life.transform.position.z);
+                }
             }
         }
 	}
@@ -128,6 +138,20 @@ public class LevelManager : MonoBehaviour {
             //spawns the player 
             player = Instantiate(playerPrefab);
             player.transform.position = new Vector3(terrainLocations[0].x,(terrainLocations[0].y+(terrainScale[0].y)*2.5f)+((player.transform.localScale.y)),0);//at this position
+            playerStart = new Vector3(terrainLocations[0].x, (terrainLocations[0].y + (terrainScale[0].y) * 2.5f) + ((player.transform.localScale.y)), 0);
+
+            //makes player life ui
+            int lifeNum = player.GetComponent<BasicMovement>().lives;
+            for (int i = 0; i < lifeNum; i++)
+            {
+                GameObject life = Instantiate(playerPrefab);//makes a life marker 
+                life.transform.localScale = new Vector3(.25f,.25f,.25f);//makes him tiny 
+                //puts him on screen
+                life.transform.position = new Vector3((camMain.transform.position.x - (camMain.pixelWidth / Screen.dpi)) + (i *2*life.transform.localScale.x), (Screen.height / Screen.dpi) - life.transform.localScale.y, 0);
+                Destroy(life.GetComponent<BasicMovement>());//makes it so he doesnt move like a player
+                lives.Add(life);//add it to a list for later use 
+                
+            }
         }
 
         //controls screen
@@ -159,9 +183,11 @@ public class LevelManager : MonoBehaviour {
         //death screen
         if (lvl == int.MinValue)
         {
+            Destroy(player);
             GameObject gO = Instantiate(gameOver);
             gO.transform.position = new Vector3(camMain.transform.position.x - camMain.pixelWidth / Screen.dpi / 4, camMain.transform.position.y/ Screen.dpi / 2 + 2);
             clones.Add(gO);
+            
         }
 
     }
@@ -196,7 +222,6 @@ public class LevelManager : MonoBehaviour {
             //button that starts the game code
             if (GUI.Button(new Rect(Screen.width / 2 - 80, Screen.height/2 , 150, 60), "Play Again?"))
             {
-                clones.Add(player);
                 LevelUp(1);
 
             }
@@ -219,4 +244,15 @@ public class LevelManager : MonoBehaviour {
             }
         }
     }
+
+    public void RespawnPlayer()
+    {
+        BasicMovement script = player.GetComponent<BasicMovement>();
+        player.transform.position = playerStart+ new Vector3(0,10,0);
+        
+        script.playerFall = 0;
+        script.loseLife = false;
+        
+    }
+
 }

@@ -23,13 +23,16 @@ public class BasicMovement : MonoBehaviour {
     //player jump velocity
     float playerJump = 0.0f;
     //player specifc gravity
-    float playerFall = 0.0f;
+    public float playerFall = 0.0f;
+    float playerFallMax = 2.0f;
 
-    bool playerGrounded = true;
+    public bool playerGrounded = true;//if the player is able to jump or not
 
-    public bool dead = false;
-    bool isNew = true;
-    bool getScreen = false;
+    public bool dead = false;//is the player dead
+    public bool loseLife = false;//has the player just lost a life
+    bool getScreen = false;//do we need to get the game over screen
+
+    public int lives = 3;//the amount of lives the player has
 
     public GameObject lvlMng;
     List<GameObject> terrainList;
@@ -38,7 +41,6 @@ public class BasicMovement : MonoBehaviour {
     {
          lvlMng = GameObject.Find("LevelManager");
          terrainList = lvlMng.GetComponent<LevelManager>().platforms;
-
     }
 
     // Use this for initialization
@@ -66,12 +68,29 @@ public class BasicMovement : MonoBehaviour {
         //checks for Player Death
         if (gameObject.transform.position.y < -30)
         {
-            dead = true;
-            if (getScreen == false)
+            loseLife = true;
+
+            if (loseLife == true)
             {
-                GameObject.Find("LevelManager").GetComponent<LevelManager>().LevelUp(int.MinValue);//get the you died screen
-                getScreen = true;
+                lives--;//lose a life
+                List<GameObject> lifeList = lvlMng.GetComponent<LevelManager>().lives;//gets the list of lives from the manager 
+                Destroy(lifeList[lifeList.Count-1]);//gets rid of the marker
+                lifeList.Remove(lifeList[lifeList.Count-1]);//removes the last life from the list
+
+                lvlMng.GetComponent<LevelManager>().RespawnPlayer();//resets player
+                
             }
+
+            if (lives <= 0)//if you're out of lives
+            {
+                dead = true;//you ded
+                if (getScreen == false)
+                {
+                    lvlMng.GetComponent<LevelManager>().LevelUp(int.MinValue);//get the you died screen
+                    getScreen = true;
+                }
+            }
+            
             
         }
 
@@ -197,7 +216,11 @@ public class BasicMovement : MonoBehaviour {
                 }
                 else
                 {
-                    playerFall -= 0.01f;
+                    if (playerFall != playerFallMax)
+                    {
+                        playerFall -= 0.01f;
+                    }
+                    
                     playerJump = playerFall;
                 }
             }
