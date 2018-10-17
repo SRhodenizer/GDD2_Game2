@@ -9,10 +9,7 @@ using UnityEngine;
     */
 
 public class BasicMovement : MonoBehaviour {
-
-    //list of all the current terrain
-    List<GameObject> terrainList;
-
+    
     int frames = 0;
     int time = 0;
     //player max horizontal speed
@@ -30,13 +27,23 @@ public class BasicMovement : MonoBehaviour {
 
     bool playerGrounded = true;
 
+    public bool dead = false;
+    bool isNew = true;
+    bool getScreen = false;
+
+    public GameObject lvlMng;
+    List<GameObject> terrainList;
+
+    private void Awake()
+    {
+         lvlMng = GameObject.Find("LevelManager");
+         terrainList = lvlMng.GetComponent<LevelManager>().platforms;
+
+    }
 
     // Use this for initialization
     void Start () {
-
-        //gets the terrain locations from the level manager
-        LevelManager lvlMng = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        terrainList = lvlMng.platforms;
+        
 
     }
 
@@ -49,127 +56,25 @@ public class BasicMovement : MonoBehaviour {
             time++;
         }
 
-        //Remove the following code if not needed
-
-        /*
-        //Could use this to interact with upward movements
-        if (Input.GetKeyDown(KeyCode.W))
+        //if you're not dead
+        if (dead == false)
         {
-            //this.transform.position += new Vector3(0.0f, 0.1f, 0.0f);
-            //useless for now
+            //the movement code -it looked messy-
+            InputMovement();
         }
 
-        //could use this to interact with downwards movement
-        if (Input.GetKeyDown(KeyCode.S))
+        //checks for Player Death
+        if (gameObject.transform.position.y < -30)
         {
-            //this.transform.position += new Vector3(0.0f, -0.1f, 0.0f);
-            //useless for now
-        }
-
-        */
-
-        
-        if (Input.GetKey(KeyCode.D))//D key for moving right
-        {
-            //transform.position += new Vector3(0.1f, 0.0f, 0.0f);
-
-            playerSpeed += playerAccel;
-            if (playerSpeed > playerMaxSpeed)
+            dead = true;
+            if (getScreen == false)
             {
-                playerSpeed = playerMaxSpeed;
+                GameObject.Find("LevelManager").GetComponent<LevelManager>().LevelUp(int.MinValue);//get the you died screen
+                getScreen = true;
             }
-
-        }else if (Input.GetKey(KeyCode.A))  // A key for moving left on the screen
-        {
-            //transform.position += new Vector3(-0.1f, 0.0f, 0.0f);
-
-            playerSpeed -= playerAccel;
-            if (playerSpeed < -playerMaxSpeed)
-            {
-                playerSpeed = -playerMaxSpeed;
-            }
-        }
-        else
-        {
-            if (playerSpeed < 0)
-            {
-                playerSpeed += (playerAccel + 0.01f);
-                if(playerSpeed >= 0)
-                {
-                    playerSpeed = 0.0f;
-                }
-
-            }
-            else
-            {
-                playerSpeed -= (playerAccel + 0.01f) ;
-                if(playerSpeed <= 0)
-                {
-                    playerSpeed = 0.0f;
-                }
-            }
-        }
-
-
-
-        //Space key, for jumping
-        if (Input.GetKey(KeyCode.Space) == true && playerGrounded == true)
-        {
-            //transform.position += new Vector3(0.0f,1.0f,0.0f);
             
-            if (transform.position.y > transform.position.y + 5.0f)
-            {
-                playerJump = 0.0f;
-                playerGrounded = false;
-            }
-            else if (playerGrounded == true)
-            {
-                playerJump = playerMaxJump ;
-                if (playerMaxJump > 0.0f)
-                {
-                    playerMaxJump = playerMaxJump - playerAccel;
-                }else if (playerMaxJump <= 0.0f)
-                {
-                    playerGrounded = false;
-                }
-
-            }
         }
-        else
-        {
 
-            foreach (GameObject platform in terrainList)
-            {
-                if (AABBCollide(gameObject, platform) == true)
-                {
-                    playerJump = 0.0f;
-                    playerGrounded = true;
-                    playerMaxJump = 0.25f;
-                    playerFall = 0.0f;
-                    break;
-                }
-                else
-                {
-                    playerFall -= 0.01f;
-                    playerJump = playerFall;
-                }
-            }
-
-            //need to change this to some collision based thing to get the char to jump off terrain 
-            /*if (transform.position.y <= 0)
-            {
-                playerJump = 0.0f;
-                playerGrounded = true;
-                playerMaxJump = 0.25f;
-                playerFall = 0.0f;
-            }
-            else
-            {
-                playerFall -= 0.01f;
-                playerJump = playerFall;
-            }*/
-
-        }
 
         transform.position += new Vector3(playerSpeed,playerJump,0.0f);
         frames++;
@@ -193,5 +98,110 @@ public class BasicMovement : MonoBehaviour {
         return result;
     }
 
+    //checks for collsions on the player's feet
+    public bool footCollide(GameObject g1, GameObject g2)
+    {
+        bool result = false; 
+        if (g1 != null && g2 != null)
+        {
+            
+            //sets bounds of the game objects that may or may not be colliding
+            Bounds bounds1 = g1.GetComponent<SpriteRenderer>().bounds;
+            Bounds bounds2 = g2.GetComponent<SpriteRenderer>().bounds;
+
+            //uses AABB logic to determine if the object 1's minimum y is colliding with object 2's max y
+            if (bounds1.min.x < bounds2.max.x && bounds1.max.x > bounds2.min.x && bounds1.min.y < bounds2.max.y + .5f && bounds1.min.y >= bounds2.max.y)
+            {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public void InputMovement()
+    {
+        if (Input.GetKey(KeyCode.D))//D key for moving right
+        {
+            //transform.position += new Vector3(0.1f, 0.0f, 0.0f);
+
+            playerSpeed += playerAccel;
+            if (playerSpeed > playerMaxSpeed)
+            {
+                playerSpeed = playerMaxSpeed;
+            }
+
+        }
+        else if (Input.GetKey(KeyCode.A))  // A key for moving left on the screen
+        {
+            //transform.position += new Vector3(-0.1f, 0.0f, 0.0f);
+
+            playerSpeed -= playerAccel;
+            if (playerSpeed < -playerMaxSpeed)
+            {
+                playerSpeed = -playerMaxSpeed;
+            }
+        }
+        else
+        {
+            if (playerSpeed < 0)
+            {
+                playerSpeed += (playerAccel + 0.01f);
+                if (playerSpeed >= 0)
+                {
+                    playerSpeed = 0.0f;
+                }
+            }
+            else
+            {
+                playerSpeed -= (playerAccel + 0.01f);
+                if (playerSpeed <= 0)
+                {
+                    playerSpeed = 0.0f;
+                }
+            }
+        }
+        //Space key, for jumping
+        if (Input.GetKey(KeyCode.Space) == true && playerGrounded == true)
+        {
+            //transform.position += new Vector3(0.0f,1.0f,0.0f);
+
+            if (transform.position.y > transform.position.y + 5.0f)
+            {
+                playerJump = 0.0f;
+                playerGrounded = false;
+            }
+            else if (playerGrounded == true)
+            {
+                playerJump = playerMaxJump;
+                if (playerMaxJump > 0.0f)
+                {
+                    playerMaxJump = playerMaxJump - playerAccel;
+                }
+                else if (playerMaxJump <= 0.0f)
+                {
+                    playerGrounded = false;
+                }
+            }
+        }
+        else
+        { 
+            foreach (GameObject platform in terrainList)
+            {
+                if (footCollide(gameObject, platform) == true)
+                {
+                    playerJump = 0.0f;
+                    playerGrounded = true;
+                    playerMaxJump = 0.25f;
+                    playerFall = 0.0f;
+                    break;
+                }
+                else
+                {
+                    playerFall -= 0.01f;
+                    playerJump = playerFall;
+                }
+            }
+        }
+    }
 
 }
