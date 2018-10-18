@@ -8,8 +8,9 @@ using UnityEngine;
     * GDD2 - Game 2 - Postmortem
     */
 
-public class BasicMovement : MonoBehaviour {
-    
+public class BasicMovement : MonoBehaviour
+{
+
     int frames = 0;
     int time = 0;
     //player max horizontal speed
@@ -24,7 +25,7 @@ public class BasicMovement : MonoBehaviour {
     float playerJump = 0.0f;
     //player specifc gravity
     public float playerFall = 0.0f;
-    float playerFallMax = 2.0f;
+    float playerFallMax = 1.0f;
 
     public bool playerGrounded = true;//if the player is able to jump or not
 
@@ -39,13 +40,14 @@ public class BasicMovement : MonoBehaviour {
 
     private void Awake()
     {
-         lvlMng = GameObject.Find("LevelManager");
-         terrainList = lvlMng.GetComponent<LevelManager>().platforms;
+        lvlMng = GameObject.Find("LevelManager");
+        terrainList = lvlMng.GetComponent<LevelManager>().platforms;
     }
 
     // Use this for initialization
-    void Start () {
-        
+    void Start()
+    {
+
 
     }
 
@@ -74,11 +76,11 @@ public class BasicMovement : MonoBehaviour {
             {
                 lives--;//lose a life
                 List<GameObject> lifeList = lvlMng.GetComponent<LevelManager>().lives;//gets the list of lives from the manager 
-                Destroy(lifeList[lifeList.Count-1]);//gets rid of the marker
-                lifeList.Remove(lifeList[lifeList.Count-1]);//removes the last life from the list
+                Destroy(lifeList[lifeList.Count - 1]);//gets rid of the marker
+                lifeList.Remove(lifeList[lifeList.Count - 1]);//removes the last life from the list
 
                 lvlMng.GetComponent<LevelManager>().RespawnPlayer();//resets player
-                
+
             }
 
             if (lives <= 0)//if you're out of lives
@@ -90,12 +92,12 @@ public class BasicMovement : MonoBehaviour {
                     getScreen = true;
                 }
             }
-            
-            
+
+
         }
 
 
-        transform.position += new Vector3(playerSpeed,playerJump,0.0f);
+        transform.position += new Vector3(playerSpeed, playerJump, 0.0f);
         frames++;
     }
 
@@ -120,10 +122,10 @@ public class BasicMovement : MonoBehaviour {
     //checks for collsions on the player's feet
     public bool footCollide(GameObject g1, GameObject g2)
     {
-        bool result = false; 
+        bool result = false;
         if (g1 != null && g2 != null)
         {
-            
+
             //sets bounds of the game objects that may or may not be colliding
             Bounds bounds1 = g1.GetComponent<SpriteRenderer>().bounds;
             Bounds bounds2 = g2.GetComponent<SpriteRenderer>().bounds;
@@ -179,6 +181,31 @@ public class BasicMovement : MonoBehaviour {
                 }
             }
         }
+
+        foreach (GameObject platform in terrainList)
+        {
+
+            if (footCollide(gameObject, platform) == true)
+            {
+                playerJump = 0.0f;
+                playerGrounded = true;
+                playerMaxJump = 0.28f;
+                playerFall = 0.0f;
+                break;
+            }
+            else
+            {
+                if (playerFall != playerFallMax)
+
+                {
+                    playerFall -= 0.002f;
+                }
+
+                playerJump = playerFall;
+            }
+
+        }
+
         //Space key, for jumping
         if (Input.GetKey(KeyCode.Space) == true && playerGrounded == true)
         {
@@ -202,29 +229,7 @@ public class BasicMovement : MonoBehaviour {
                 }
             }
         }
-        else
-        { 
-            foreach (GameObject platform in terrainList)
-            {
-                if (footCollide(gameObject, platform) == true)
-                {
-                    playerJump = 0.0f;
-                    playerGrounded = true;
-                    playerMaxJump = 0.25f;
-                    playerFall = 0.0f;
-                    break;
-                }
-                else
-                {
-                    if (playerFall != playerFallMax)
-                    {
-                        playerFall -= 0.003f;
-                    }
-                    
-                    playerJump = playerFall;
-                }
-            }
-        }
+
     }
 
 }

@@ -147,7 +147,7 @@ public class LevelManager : MonoBehaviour {
                 GameObject life = Instantiate(playerPrefab);//makes a life marker 
                 life.transform.localScale = new Vector3(.25f,.25f,.25f);//makes him tiny 
                 //puts him on screen
-                life.transform.position = new Vector3((camMain.transform.position.x - (camMain.pixelWidth / Screen.dpi)) + (i *2*life.transform.localScale.x), (Screen.height / Screen.dpi) - life.transform.localScale.y, 0);
+                life.transform.position = new Vector3((camMain.transform.position.x - (camMain.pixelWidth / Screen.dpi)) + (i *2*life.transform.localScale.x), (Screen.height / Screen.dpi) - 2*life.transform.localScale.y, 0);
                 Destroy(life.GetComponent<BasicMovement>());//makes it so he doesnt move like a player
                 lives.Add(life);//add it to a list for later use 
                 
@@ -249,6 +249,7 @@ public class LevelManager : MonoBehaviour {
     {
         BasicMovement script = player.GetComponent<BasicMovement>();
         player.transform.position = playerStart+ new Vector3(0,10,0);
+        script.playerGrounded = false;
         
         script.playerFall = 0;
         script.loseLife = false;
