@@ -218,7 +218,7 @@ public class BasicMovement : MonoBehaviour {
                 {
                     if (playerFall != playerFallMax)
                     {
-                        playerFall -= 0.01f;
+                        playerFall -= 0.003f;
                     }
                     
                     playerJump = playerFall;
