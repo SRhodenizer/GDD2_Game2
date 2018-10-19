@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4976865392129356}
   - component: {fileID: 212751964304951162}
+  - component: {fileID: 114563524921875968}
   m_Layer: 0
   m_Name: enemyTemp
   m_TagString: Untagged
@@ -40,6 +41,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114563524921875968
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1072806497083012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d64e21dee09e94a86c2a816e8773c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!212 &212751964304951162
 SpriteRenderer:
   m_ObjectHideFlags: 1
