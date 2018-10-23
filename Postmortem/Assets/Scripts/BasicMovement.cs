@@ -71,31 +71,28 @@ public class BasicMovement : MonoBehaviour
         if (gameObject.transform.position.y < -30)
         {
             loseLife = true;
+        }
 
-            if (loseLife == true)
-            {
-                lives--;//lose a life
-                List<GameObject> lifeList = lvlMng.GetComponent<LevelManager>().lives;//gets the list of lives from the manager 
-                Destroy(lifeList[lifeList.Count - 1]);//gets rid of the marker
-                lifeList.Remove(lifeList[lifeList.Count - 1]);//removes the last life from the list
+        if (loseLife == true)
+        {
+            lives--;//lose a life
+            List<GameObject> lifeList = lvlMng.GetComponent<LevelManager>().lives;//gets the list of lives from the manager 
+            Destroy(lifeList[lifeList.Count - 1]);//gets rid of the marker
+            lifeList.Remove(lifeList[lifeList.Count - 1]);//removes the last life from the list
 
-                lvlMng.GetComponent<LevelManager>().RespawnPlayer();//resets player
-
-            }
-
-            if (lives <= 0)//if you're out of lives
-            {
-                dead = true;//you ded
-                if (getScreen == false)
-                {
-                    lvlMng.GetComponent<LevelManager>().LevelUp(int.MinValue);//get the you died screen
-                    getScreen = true;
-                }
-            }
-
+            lvlMng.GetComponent<LevelManager>().RespawnPlayer();//resets player
 
         }
 
+        if (lives <= 0)//if you're out of lives
+        {
+            dead = true;//you ded
+            if (getScreen == false)
+            {
+                lvlMng.GetComponent<LevelManager>().LevelUp(int.MinValue);//get the you died screen
+                getScreen = true;
+            }
+        }
 
         transform.position += new Vector3(playerSpeed, playerJump, 0.0f);
         frames++;

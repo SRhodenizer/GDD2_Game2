@@ -139,6 +139,7 @@ public class LevelManager : MonoBehaviour {
             player = Instantiate(playerPrefab);
             player.transform.position = new Vector3(terrainLocations[0].x,(terrainLocations[0].y+(terrainScale[0].y)*2.5f)+((player.transform.localScale.y)),0);//at this position
             playerStart = new Vector3(terrainLocations[0].x, (terrainLocations[0].y + (terrainScale[0].y) * 2.5f) + ((player.transform.localScale.y)), 0);
+            player.tag = "Player";
 
             //makes player life ui
             int lifeNum = player.GetComponent<BasicMovement>().lives;
