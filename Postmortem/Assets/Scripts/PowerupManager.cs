@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/*
+    *Script for tracking the list of enemies and powerups
+    * Either static or moving
+    * Coded by Andrew Murphy
+    * GDD2 - Game 2 - Postmortem
+    */
 public class PowerupManager : MonoBehaviour {
 
     public List<GameObject> enemies;
@@ -19,4 +26,10 @@ public class PowerupManager : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    //Spawns a single enemy
+    void SpawnEnemy()
+    {
+        enemies.Add(Instantiate(enemyPrefab));
+    }
 }

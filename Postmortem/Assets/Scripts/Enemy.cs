@@ -15,11 +15,15 @@ public class Enemy : MonoBehaviour {
 
     public GameObject player;
 
-	// Use this for initialization
-	void Start () {
+    public GameObject pwerMng;
+    List<GameObject> enemyList;
+    // Use this for initialization
+    void Start () {
         player = GameObject.FindGameObjectWithTag("Player");
-		
-	}
+        pwerMng = GameObject.Find("PowerupManager");
+        enemyList = pwerMng.GetComponent<PowerupManager>().enemies;
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -28,9 +32,9 @@ public class Enemy : MonoBehaviour {
 
     // When the enemy collides with the player
     //May use AABB collision instead
-    void OnCollisionEnter2D(Collision2D other)
+    /*void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("We touchin, boys");
+        Debug.Log("Collisioncheck");
 
         LevelManager levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         // player = levelManager.player
@@ -39,10 +43,10 @@ public class Enemy : MonoBehaviour {
         {
 
             //Drop the powerup and kill the player
-            Debug.Log("We touchin, boys");
+            Debug.Log("Collisioncheck");
             moveScript.loseLife = true;
 
         }
          
-    }
+    }*/
 }

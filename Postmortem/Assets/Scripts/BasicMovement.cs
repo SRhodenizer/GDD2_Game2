@@ -38,10 +38,15 @@ public class BasicMovement : MonoBehaviour
     public GameObject lvlMng;
     List<GameObject> terrainList;
 
+    public GameObject pwerMng;
+    List<GameObject> enemyList;
+
     private void Awake()
     {
         lvlMng = GameObject.Find("LevelManager");
         terrainList = lvlMng.GetComponent<LevelManager>().platforms;
+        pwerMng = GameObject.Find("PowerupManager");
+        enemyList = pwerMng.GetComponent<PowerupManager>().enemies;
     }
 
     // Use this for initialization
@@ -71,6 +76,16 @@ public class BasicMovement : MonoBehaviour
         if (gameObject.transform.position.y < -30)
         {
             loseLife = true;
+        }
+
+        foreach (GameObject enemy in enemyList)
+        {
+            if (AABBCollide(gameObject, enemy))
+            {
+                loseLife = true;
+                break;
+
+            }
         }
 
         if (loseLife == true)
