@@ -11,6 +11,10 @@ using UnityEngine;
     */
 
 
+    //Comment We can use this for the spike code to or just add it in to the enemy manager. 
+    //we could probs even rename this to hazards mngr instead of just enemies - kevin
+
+
 public class Enemy : MonoBehaviour {
 
     public GameObject player;

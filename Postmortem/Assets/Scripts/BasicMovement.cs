@@ -25,7 +25,7 @@ public class BasicMovement : MonoBehaviour
     float playerJump = 0.0f;
     //player specifc gravity
     public float playerFall = 0.0f;
-    float playerFallMax = 1.0f;
+    float playerFallMax = 0.05f;
 
     public bool playerGrounded = true;//if the player is able to jump or not
 
@@ -210,7 +210,13 @@ public class BasicMovement : MonoBehaviour
                 if (playerFall != playerFallMax)
 
                 {
-                    playerFall -= 0.002f;
+                    //playerFall = playerFallMax;
+                    playerFall -= 0.001f;
+                }
+
+                if (playerFall > playerFallMax)
+                {
+                    playerFall = playerFallMax;
                 }
 
                 playerJump = playerFall;
