@@ -11,25 +11,32 @@ using UnityEngine;
 public class Fade : MonoBehaviour {
 
     LevelManager lvlMng;
-    bool switched = false;
+    int switched = 0;
 
 	// Use this for initialization
 	void Start () {
         //play the animation
-        StartCoroutine("FadeOutAnim");
+        StartCoroutine("FadeInAnim");
         lvlMng = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
     }
 	
 	// Update is called once per frame
 	void Update () {
-        
-        //when the animation is finished 
-        if (gameObject.GetComponent<SpriteRenderer>().color.a < -0.00000005f && switched == false)
+
+        //when the in  animation is finished 
+         if (gameObject.GetComponent<SpriteRenderer>().color.a > .9f && switched == 0)
+        {
+            StartCoroutine("FadeOutAnim");
+            switched = 1;
+        }
+
+        //when the out animation is finished 
+        if (gameObject.GetComponent<SpriteRenderer>().color.a < -0.01f && switched == 1)
         {
             lvlMng.creditFade = false;
             lvlMng.LevelUp(0);
-            switched = true;
+            switched = 2;
         }
 
     }
@@ -48,7 +55,7 @@ public class Fade : MonoBehaviour {
 
     IEnumerator FadeInAnim()
     {
-        for (float f = -0.1f; f <= 1f; f -= 0.05f)
+        for (float f = -0.1f; f <= 1f; f += 0.05f)
         {
             Color c = gameObject.GetComponent<SpriteRenderer>().color;
             c.a = f;
