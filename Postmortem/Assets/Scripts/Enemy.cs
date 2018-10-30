@@ -20,19 +20,20 @@ public class Enemy : MonoBehaviour {
     public GameObject player;
 
     public GameObject pwerMng;
-    List<GameObject> enemyList;
     // Use this for initialization
     void Start () {
         player = GameObject.FindGameObjectWithTag("Player");
         pwerMng = GameObject.Find("PowerupManager");
-        enemyList = pwerMng.GetComponent<PowerupManager>().enemies;
+
 
     }
 	
 	// Update is called once per frame
 	void Update () {
+        //Based on prefab tag, movement goes here
 		
 	}
+
 
     // When the enemy collides with the player
     //May use AABB collision instead

@@ -12,13 +12,17 @@ using UnityEngine;
 public class PowerupManager : MonoBehaviour {
 
     public List<GameObject> enemies;
-    public List<GameObject> powerups;
+    public Queue<GameObject> powerups;
     public GameObject enemyPrefab;
+
+    public GameObject powerupPrefab;
 
 
 	// Use this for initialization
 	void Start () {
         //enemies.Add(Instantiate(enemyPrefab));
+        enemies = new List<GameObject>();
+        powerups = new Queue<GameObject>();
         
 	}
 	
@@ -28,8 +32,18 @@ public class PowerupManager : MonoBehaviour {
 	}
 
     //Spawns a single enemy
-    void SpawnEnemy()
+    public void SpawnEnemy(Vector3 location)
     {
-        enemies.Add(Instantiate(enemyPrefab));
+        enemies.Add(Instantiate(enemyPrefab, location, Quaternion.identity));
+    }
+
+    //Spawns appropriate powerup when player dies
+    public void SpawnPowerup(Vector3 location)
+    {
+        if (powerups.Count > 3)
+        {
+            Destroy(powerups.Dequeue());
+        }
+        powerups.Enqueue(Instantiate(powerupPrefab, location, Quaternion.identity));
     }
 }

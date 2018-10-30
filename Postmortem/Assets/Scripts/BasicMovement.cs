@@ -39,14 +39,16 @@ public class BasicMovement : MonoBehaviour
     List<GameObject> terrainList;
 
     public GameObject pwerMng;
-    List<GameObject> enemyList;
+    //List<GameObject> enemyList;
+    Queue<GameObject> pwers;
 
     private void Awake()
     {
         lvlMng = GameObject.Find("LevelManager");
         terrainList = lvlMng.GetComponent<LevelManager>().platforms;
         pwerMng = GameObject.Find("PowerupManager");
-        enemyList = pwerMng.GetComponent<PowerupManager>().enemies;
+        //enemyList = pwerMng.GetComponent<PowerupManager>().enemies;
+        pwers = pwerMng.GetComponent<PowerupManager>().powerups;
     }
 
     // Use this for initialization
@@ -77,16 +79,44 @@ public class BasicMovement : MonoBehaviour
         {
             loseLife = true;
         }
+        
 
-        foreach (GameObject enemy in enemyList)
+        //checks if player hits a hazard
+        foreach (GameObject enemy in pwerMng.GetComponent<PowerupManager>().enemies)
         {
+            
             if (AABBCollide(gameObject, enemy))
             {
                 loseLife = true;
+                pwerMng.GetComponent<PowerupManager>().SpawnPowerup(transform.position);
                 break;
-
             }
         }
+
+        foreach (GameObject pad in pwerMng.GetComponent<PowerupManager>().powerups)
+        {
+            if (AABBCollide(gameObject, pad))
+            {
+                //Treat player as grounded
+                playerJump = 0.0f;
+                playerGrounded = true;
+                playerMaxJump = 0.4f;
+                playerFall = 0.0f;
+                //Force immediate bounce
+                playerJump = playerMaxJump;
+                if (playerMaxJump > 0.0f)
+                {
+                    playerMaxJump = playerMaxJump - playerAccel;
+                }
+                else if (playerMaxJump <= 0.0f)
+                {
+                    playerGrounded = false;
+                }
+
+                break;
+            }
+        }
+
 
         if (loseLife == true)
         {
@@ -101,6 +131,18 @@ public class BasicMovement : MonoBehaviour
 
         if (lives <= 0)//if you're out of lives
         {
+            foreach (GameObject enemy in pwerMng.GetComponent<PowerupManager>().enemies)
+            {
+                Destroy(enemy);
+            }
+            foreach (GameObject powerup in pwerMng.GetComponent<PowerupManager>().powerups)
+            {
+                Destroy(powerup);
+            }
+            pwerMng.GetComponent<PowerupManager>().enemies.Clear();
+            pwerMng.GetComponent<PowerupManager>().powerups.Clear();
+
+
             dead = true;//you ded
             if (getScreen == false)
             {
