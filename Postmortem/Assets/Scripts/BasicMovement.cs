@@ -182,6 +182,25 @@ public class BasicMovement : MonoBehaviour
         }
 
         transform.position += new Vector3(playerSpeed, playerJump, 0.0f);
+
+        //Adjust position of all projectiles
+        foreach (GameObject pellet in pellets)
+        {
+            pellet.transform.position += new Vector3(0.1f, 0, 0);
+
+            //Check for collision with enemies
+            foreach (GameObject roamer in pwerMng.GetComponent<PowerupManager>().enemies)
+            {
+                if (AABBCollide(pellet, roamer))
+                {
+                    pwerMng.GetComponent<PowerupManager>().enemies.Remove(roamer);
+                    Destroy(roamer);
+                    pellets.Remove(pellet);
+                    Destroy(pellet);
+                }
+            }
+            
+        }
         frames++;
     }
 
