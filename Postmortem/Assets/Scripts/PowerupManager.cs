@@ -24,7 +24,7 @@ public class PowerupManager : MonoBehaviour {
         enemies = new List<GameObject>();
         powerups = new Queue<GameObject>();
 
-        SpawnRoamer(new Vector3(2, 0, 0));
+        //SpawnRoamer(new Vector3(2, 0, 0));
         //SpawnSpike(new Vector3(1, 0, 0));
 	}
 	

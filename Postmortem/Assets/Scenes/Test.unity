@@ -284,7 +284,13 @@ Prefab:
         type: 2}
       propertyPath: creditScreen
       value: 
-      objectReference: {fileID: 1931993624595204, guid: 8fb56509c3bb2bc47b9ce094d8d0a3cc,
+      objectReference: {fileID: 1393443639451394, guid: 40eb3e28155ef164d8c5851153ad071b,
+        type: 2}
+    - target: {fileID: 114185974936218332, guid: 7cd0c8b416c790f4a86b907da6fef6e4,
+        type: 2}
+      propertyPath: creditLabel
+      value: 
+      objectReference: {fileID: 1444610992355508, guid: d16e3ffc8bca9a64696c41f76ab9fd29,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cd0c8b416c790f4a86b907da6fef6e4, type: 2}
@@ -322,7 +328,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215688, g: 0.3019608, b: 0.47450984, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -360,7 +366,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1733958970}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 136.5, y: 238.5, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

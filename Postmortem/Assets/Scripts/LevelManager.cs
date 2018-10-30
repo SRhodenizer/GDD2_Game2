@@ -20,7 +20,9 @@ public class LevelManager : MonoBehaviour {
     public GameObject title;
     public GameObject loadScreen;
     public GameObject creditScreen;
-    bool creditFade = true;
+    public GameObject creditLabel;
+    GameObject credit;
+    public bool creditFade = true;
 
     //variables for the control screen
     public GameObject controlBG;
@@ -50,7 +52,6 @@ public class LevelManager : MonoBehaviour {
 	void Start () {
 
         LevelUp(0);//sets level to the load screen
-
     }
 	
 	// Update is called once per frame
@@ -97,13 +98,31 @@ public class LevelManager : MonoBehaviour {
 
         if (lvl == 0)//load screen
         {
-            GameObject credit = Instantiate(creditScreen);
             //makes the load screen background and the title words appear 
             GameObject bg = Instantiate(loadScreen);
             GameObject clone = Instantiate(title);
             clones.Add(clone);
             clones.Add(bg);
-            bg.transform.localScale = new Vector3(Screen.width / 8 / Screen.dpi, Screen.height / 4 / Screen.dpi, 0);
+            bg.transform.localScale = new Vector3(Screen.width / 8f / Screen.dpi, Screen.height / 4f / Screen.dpi, 0);
+
+
+            if (creditFade == true)//if you need to see the credits 
+            {
+                credit = Instantiate(creditScreen);
+                clones.Add(credit);
+                GameObject credLab = Instantiate(creditLabel);
+                clones.Add(credLab);
+                credit.transform.localScale = new Vector3(Screen.width / 2.0f / Screen.dpi, Screen.height / 2.5f / Screen.dpi, 0);
+
+                //hides the normal load screen 
+                bg.GetComponent<SpriteRenderer>().enabled = false;
+                for (int i = 0; i < 2; i++)
+                {
+                    Color temp = clone.GetComponentsInChildren<TextMesh>()[i].color;
+                    temp.a = 0;
+                    clone.GetComponentsInChildren<TextMesh>()[i].color = temp;
+                }
+            }
         }
 
         if (lvl == 1)//test level
