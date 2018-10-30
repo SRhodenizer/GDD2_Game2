@@ -134,7 +134,7 @@ public class LevelManager : MonoBehaviour {
                 platforms.Add(currTerr);//adds this terrain to the list 
                 clones.Add(currTerr);
 
-                //Andrew - 
+                
             }
 
             //spawns the player 

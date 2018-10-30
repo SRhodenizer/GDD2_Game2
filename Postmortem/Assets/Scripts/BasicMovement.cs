@@ -40,7 +40,6 @@ public class BasicMovement : MonoBehaviour
 
     public GameObject pwerMng;
     //List<GameObject> enemyList;
-    Queue<GameObject> pwers;
 
     private void Awake()
     {
@@ -48,7 +47,6 @@ public class BasicMovement : MonoBehaviour
         terrainList = lvlMng.GetComponent<LevelManager>().platforms;
         pwerMng = GameObject.Find("PowerupManager");
         //enemyList = pwerMng.GetComponent<PowerupManager>().enemies;
-        pwers = pwerMng.GetComponent<PowerupManager>().powerups;
     }
 
     // Use this for initialization
