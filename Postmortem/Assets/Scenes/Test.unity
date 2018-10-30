@@ -141,9 +141,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemies: []
-  powerups: []
-  enemyPrefab: {fileID: 1072806497083012, guid: e1236ffcc247abb4d93c85220c0d5958,
+  spikePrefab: {fileID: 0}
+  roamerPrefab: {fileID: 1929274651234592, guid: 8a642e707c4f1c44588e3d27e914825b,
     type: 2}
+  powerupPrefab: {fileID: 0}
 --- !u!4 &718898447
 Transform:
   m_ObjectHideFlags: 0
