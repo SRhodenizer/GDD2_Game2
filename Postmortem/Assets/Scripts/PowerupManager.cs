@@ -13,10 +13,14 @@ public class PowerupManager : MonoBehaviour {
 
     public List<GameObject> enemies;
     public Queue<GameObject> powerups;
+
+    //Prefabs for enemies
     public GameObject spikePrefab;
     public GameObject roamerPrefab;
-    public GameObject powerupPrefab;
 
+    //Prefabs for the powerups
+    public GameObject bouncePrefab;
+    public GameObject orbPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -24,7 +28,7 @@ public class PowerupManager : MonoBehaviour {
         enemies = new List<GameObject>();
         powerups = new Queue<GameObject>();
 
-        SpawnRoamer(new Vector3(2, 0, 0));
+        //SpawnRoamer(new Vector3(2, 0, 0));
         //SpawnSpike(new Vector3(1, 0, 0));
 	}
 	
@@ -46,12 +50,24 @@ public class PowerupManager : MonoBehaviour {
     }
 
     //Spawns appropriate powerup when player dies
-    public void SpawnPowerup(Vector3 location)
+    //In this case, spawns a bounce pad when the player dies to spikes
+    public void SpawnBounce(Vector3 location)
     {
         if (powerups.Count > 3)
         {
             Destroy(powerups.Dequeue());
         }
-        powerups.Enqueue(Instantiate(powerupPrefab, location, Quaternion.identity));
+        powerups.Enqueue(Instantiate(bouncePrefab, location, Quaternion.identity));
+    }
+
+
+    //Spawns an orb when the player dies to a roamer
+    public void SpawnOrb(Vector3 location)
+    {
+        if (powerups.Count > 3)
+        {
+            Destroy(powerups.Dequeue());
+        }
+        powerups.Enqueue(Instantiate(orbPrefab, location, Quaternion.identity));
     }
 }
