@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Roamer
   - Spike
+  - Bounce
+  - Orb
   layers:
   - Default
   - TransparentFX

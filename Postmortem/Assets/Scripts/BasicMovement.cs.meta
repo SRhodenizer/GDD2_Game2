@@ -3,7 +3,10 @@ guid: 7d450f4a3879e7e449d37d5325849b26
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - lvlMng: {instanceID: 0}
+  - pwerMng: {instanceID: 0}
+  - pellet: {fileID: 1076872456293782, guid: a52fdf00f0b919541afae952ef24c42c, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

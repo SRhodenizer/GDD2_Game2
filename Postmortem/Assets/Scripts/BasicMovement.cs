@@ -43,6 +43,8 @@ public class BasicMovement : MonoBehaviour
     public GameObject pwerMng;
     //List<GameObject> enemyList;
 
+    public GameObject pellet; // Transform for the projectile
+    List<GameObject> pellets; // Queue to track projectile
     private void Awake()
     {
         lvlMng = GameObject.Find("LevelManager");
@@ -50,7 +52,9 @@ public class BasicMovement : MonoBehaviour
         pwerMng = GameObject.Find("PowerupManager");
         //enemyList = pwerMng.GetComponent<PowerupManager>().enemies;
 
-        orbEquipped = false;
+
+        pellets = new List<GameObject>();
+        orbEquipped = false; // Player starts unable to fire
     }
 
     // Use this for initialization
@@ -143,6 +147,9 @@ public class BasicMovement : MonoBehaviour
 
         if (loseLife == true)
         {
+            orbEquipped = false;// Player loses ability to fire
+
+
             lives--;//lose a life
             List<GameObject> lifeList = lvlMng.GetComponent<LevelManager>().lives;//gets the list of lives from the manager 
             Destroy(lifeList[lifeList.Count - 1]);//gets rid of the marker
@@ -311,6 +318,11 @@ public class BasicMovement : MonoBehaviour
                     playerGrounded = false;
                 }
             }
+        }
+        //If the orb powerup has been equipped the player can fire
+        if (Input.GetKeyDown(KeyCode.W) && orbEquipped)
+        {
+            pellets.Add(Instantiate(pellet, transform.position, Quaternion.identity));
         }
 
     }
