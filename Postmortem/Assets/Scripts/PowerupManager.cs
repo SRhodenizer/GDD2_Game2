@@ -13,8 +13,8 @@ public class PowerupManager : MonoBehaviour {
 
     public List<GameObject> enemies;
     public Queue<GameObject> powerups;
-    public GameObject enemyPrefab;
-
+    public GameObject spikePrefab;
+    public GameObject roamerPrefab;
     public GameObject powerupPrefab;
 
 
@@ -23,7 +23,8 @@ public class PowerupManager : MonoBehaviour {
         //enemies.Add(Instantiate(enemyPrefab));
         enemies = new List<GameObject>();
         powerups = new Queue<GameObject>();
-        
+
+        SpawnRoamer(new Vector3(2, 0, 0));
 	}
 	
 	// Update is called once per frame
@@ -31,10 +32,16 @@ public class PowerupManager : MonoBehaviour {
 		
 	}
 
-    //Spawns a single enemy
-    public void SpawnEnemy(Vector3 location)
+    //Spawns a single spike at the location
+    public void SpawnSpike(Vector3 location)
     {
-        enemies.Add(Instantiate(enemyPrefab, location, Quaternion.identity));
+        enemies.Add(Instantiate(spikePrefab, location, Quaternion.identity));
+    }
+
+    //Spawns a single roamer at the location
+    public void SpawnRoamer(Vector3 location)
+    {
+        enemies.Add(Instantiate(roamerPrefab, location, Quaternion.identity));
     }
 
     //Spawns appropriate powerup when player dies

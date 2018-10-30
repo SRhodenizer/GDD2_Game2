@@ -18,12 +18,16 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
     public GameObject player;
-
     public GameObject pwerMng;
+    
+    float xBound;
+    float move;
     // Use this for initialization
     void Start () {
         player = GameObject.FindGameObjectWithTag("Player");
         pwerMng = GameObject.Find("PowerupManager");
+        xBound = transform.position.x + 1.8f;
+        move = 0.03f;
 
 
     }
@@ -31,7 +35,17 @@ public class Enemy : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //Based on prefab tag, movement goes here
-		
+
+        if (gameObject.tag == "Roamer")
+        {
+            transform.position += new Vector3(move, 0, 0);
+
+            if (Mathf.Abs(transform.position.x) > xBound)
+            {
+                move = -move;
+            }
+        }
+
 	}
 
 
