@@ -12,6 +12,7 @@ public class LevelManager : MonoBehaviour {
 
     //variables for Camera movement
     public Camera camMain;
+    bool respawn = false;
 
     //game over screen
     public GameObject gameOver;
@@ -60,25 +61,57 @@ public class LevelManager : MonoBehaviour {
         //Camera movement
         if (player != null)
         {
-            //moves right if player progresses 
-            if (player.transform.position.x  > camMain.transform.position.x + camMain.pixelWidth / Screen.dpi / 2)
+            if (respawn == false)
             {
-                camMain.transform.position = new Vector3(camMain.transform.position.x + .1f, camMain.transform.position.y, camMain.transform.position.z);
-                foreach (GameObject life in lives)//moves the lives on screen
+                //moves right if player progresses 
+                if (player.transform.position.x > camMain.transform.position.x + camMain.pixelWidth / Screen.dpi / 2)
                 {
-                    life.transform.position = new Vector3(life.transform.position.x + .1f, life.transform.position.y, life.transform.position.z);
+                    camMain.transform.position = new Vector3(camMain.transform.position.x + .1f, camMain.transform.position.y, camMain.transform.position.z);
+                    foreach (GameObject life in lives)//moves the lives on screen
+                    {
+                        life.transform.position = new Vector3(life.transform.position.x + .1f, life.transform.position.y, life.transform.position.z);
+                    }
                 }
-            }
 
-            //moves left if player backtracks
-            if (player.transform.position.x < camMain.transform.position.x - camMain.pixelWidth / Screen.dpi / 2)
-            {
-                camMain.transform.position = new Vector3(camMain.transform.position.x - .1f, camMain.transform.position.y, camMain.transform.position.z);
-                foreach (GameObject life in lives)//moves the lives on screen
+                //moves left if player backtracks
+                if (player.transform.position.x < camMain.transform.position.x - camMain.pixelWidth / Screen.dpi / 2)
                 {
-                    life.transform.position = new Vector3(life.transform.position.x - .1f, life.transform.position.y, life.transform.position.z);
+                    camMain.transform.position = new Vector3(camMain.transform.position.x - .1f, camMain.transform.position.y, camMain.transform.position.z);
+                    foreach (GameObject life in lives)//moves the lives on screen
+                    {
+                        life.transform.position = new Vector3(life.transform.position.x - .1f, life.transform.position.y, life.transform.position.z);
+                    }
                 }
             }
+            else
+            {
+                //moves right if player progresses 
+                if (player.transform.position.x > camMain.transform.position.x + camMain.pixelWidth / Screen.dpi / 2)
+                {
+                    camMain.transform.position = new Vector3(camMain.transform.position.x + .5f, camMain.transform.position.y, camMain.transform.position.z);
+                    foreach (GameObject life in lives)//moves the lives on screen
+                    {
+                        life.transform.position = new Vector3(life.transform.position.x + .5f, life.transform.position.y, life.transform.position.z);
+                    }
+                }
+
+                //moves left if player backtracks
+                if (player.transform.position.x < camMain.transform.position.x - camMain.pixelWidth / Screen.dpi / 2)
+                {
+                    camMain.transform.position = new Vector3(camMain.transform.position.x - .5f, camMain.transform.position.y, camMain.transform.position.z);
+                    foreach (GameObject life in lives)//moves the lives on screen
+                    {
+                        life.transform.position = new Vector3(life.transform.position.x - .5f, life.transform.position.y, life.transform.position.z);
+                    }
+                }
+            }
+            
+
+            if (player.transform.position.y <=  playerStart.y -.02f)
+            {
+                respawn = false;
+            }
+            
         }
 	}
 
@@ -281,6 +314,7 @@ public class LevelManager : MonoBehaviour {
         
         script.playerFall = 0;
         script.loseLife = false;
+        respawn = true;
         
     }
 

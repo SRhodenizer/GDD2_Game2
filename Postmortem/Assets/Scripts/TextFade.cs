@@ -10,16 +10,23 @@ using UnityEngine;
 
 public class TextFade : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    int switched = 0;
+
+    // Use this for initialization
+    void Start () {
         //play the animation
-        StartCoroutine("FadeOutAnim");
+        StartCoroutine("FadeInAnim");
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        //when the animation is finished 
+        if (gameObject.GetComponent<TextMesh>().color.a > .9f && switched == 0)
+        {
+            StartCoroutine("FadeOutAnim");
+            switched = 1;
+        }
+    }
 
     //fade Animation
     IEnumerator FadeOutAnim()
@@ -35,7 +42,7 @@ public class TextFade : MonoBehaviour {
 
     IEnumerator FadeInAnim()
     {
-        for (float f = -0.1f; f <= 1f; f -= 0.05f)
+        for (float f = -0.1f; f <= 1f; f += 0.05f)
         {
             Color c = gameObject.GetComponent<TextMesh>().color;
             c.a = f;
