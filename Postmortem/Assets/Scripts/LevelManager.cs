@@ -19,6 +19,8 @@ public class LevelManager : MonoBehaviour {
     //variables for the load screen
     public GameObject title;
     public GameObject loadScreen;
+    public GameObject creditScreen;
+    bool creditFade = true;
 
     //variables for the control screen
     public GameObject controlBG;
@@ -95,6 +97,7 @@ public class LevelManager : MonoBehaviour {
 
         if (lvl == 0)//load screen
         {
+            GameObject credit = Instantiate(creditScreen);
             //makes the load screen background and the title words appear 
             GameObject bg = Instantiate(loadScreen);
             GameObject clone = Instantiate(title);
@@ -201,21 +204,24 @@ public class LevelManager : MonoBehaviour {
         //title screen menu
         if (lvl == 0)
         {
-            //button that starts the game code
-            if (GUI.Button(new Rect(Screen.width / 2 -40, Screen.height / 2 , 100, 60), "Start"))
+            if (creditFade == false)
             {
-                LevelUp(1);
-                
-            }
-            //options button
-            if (GUI.Button(new Rect(Screen.width / 2 -40, Screen.height / 2 + 65, 100, 60), "Controls"))
-            {
-                LevelUp(int.MaxValue);//doesn't work yet but will show the controls screen when it's made 
-            }
-            //button that quits out of the game
-            if (GUI.Button(new Rect(Screen.width / 2 -40, Screen.height / 2 + 130, 100, 60), "Quit Game"))
-            {
-                Application.Quit(); //closes application
+                //button that starts the game code
+                if (GUI.Button(new Rect(Screen.width / 2 - 40, Screen.height / 2, 100, 60), "Start"))
+                {
+                    LevelUp(1);
+
+                }
+                //options button
+                if (GUI.Button(new Rect(Screen.width / 2 - 40, Screen.height / 2 + 65, 100, 60), "Controls"))
+                {
+                    LevelUp(int.MaxValue);//doesn't work yet but will show the controls screen when it's made 
+                }
+                //button that quits out of the game
+                if (GUI.Button(new Rect(Screen.width / 2 - 40, Screen.height / 2 + 130, 100, 60), "Quit Game"))
+                {
+                    Application.Quit(); //closes application
+                }
             }
         }
 
