@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Roamer
+  - Spike
+  - Bounce
+  - Orb
   layers:
   - Default
   - TransparentFX

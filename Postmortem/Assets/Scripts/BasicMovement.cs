@@ -35,18 +35,26 @@ public class BasicMovement : MonoBehaviour
 
     public int lives = 3;//the amount of lives the player has
 
+    public bool orbEquipped; //If the player has equipped the orb or not
+
     public GameObject lvlMng;
     List<GameObject> terrainList;
 
     public GameObject pwerMng;
     //List<GameObject> enemyList;
 
+    public GameObject pellet; // Transform for the projectile
+    List<GameObject> pellets; // Queue to track projectile
     private void Awake()
     {
         lvlMng = GameObject.Find("LevelManager");
         terrainList = lvlMng.GetComponent<LevelManager>().platforms;
         pwerMng = GameObject.Find("PowerupManager");
         //enemyList = pwerMng.GetComponent<PowerupManager>().enemies;
+
+
+        pellets = new List<GameObject>();
+        orbEquipped = false; // Player starts unable to fire
     }
 
     // Use this for initialization
@@ -86,30 +94,51 @@ public class BasicMovement : MonoBehaviour
             if (AABBCollide(gameObject, enemy))
             {
                 loseLife = true;
-                pwerMng.GetComponent<PowerupManager>().SpawnPowerup(transform.position);
+                //Spawns different powerup depending on hazard that killed the player
+                switch (enemy.tag)
+                {
+                    case "Spike":
+                        pwerMng.GetComponent<PowerupManager>().SpawnBounce(transform.position);
+                        break;
+                    case "Roamer":
+                        pwerMng.GetComponent<PowerupManager>().SpawnOrb(transform.position);
+                        break;
+
+                }
+                
+                
                 break;
             }
         }
 
-        foreach (GameObject pad in pwerMng.GetComponent<PowerupManager>().powerups)
+        foreach (GameObject powerup in pwerMng.GetComponent<PowerupManager>().powerups)
         {
-            if (AABBCollide(gameObject, pad))
+            if (AABBCollide(gameObject, powerup))
             {
-                //Treat player as grounded
-                playerJump = 0.0f;
-                playerGrounded = true;
-                playerMaxJump = 0.4f;
-                playerFall = 0.0f;
-                //Force immediate bounce
-                playerJump = playerMaxJump;
-                if (playerMaxJump > 0.0f)
+                switch (powerup.tag)
                 {
-                    playerMaxJump = playerMaxJump - playerAccel;
+                    case "Bounce":
+                        //Treat player as grounded
+                        playerJump = 0.0f;
+                        playerGrounded = true;
+                        playerMaxJump = 0.4f;
+                        playerFall = 0.0f;
+                        //Force immediate bounce
+                        playerJump = playerMaxJump;
+                        if (playerMaxJump > 0.0f)
+                        {
+                            playerMaxJump = playerMaxJump - playerAccel;
+                        }
+                        else if (playerMaxJump <= 0.0f)
+                        {
+                            playerGrounded = false;
+                        }
+                        break;
+                    case "Orb":
+                        orbEquipped = true;
+                        break;
                 }
-                else if (playerMaxJump <= 0.0f)
-                {
-                    playerGrounded = false;
-                }
+               
 
                 break;
             }
@@ -118,6 +147,9 @@ public class BasicMovement : MonoBehaviour
 
         if (loseLife == true)
         {
+            orbEquipped = false;// Player loses ability to fire
+
+
             lives--;//lose a life
             List<GameObject> lifeList = lvlMng.GetComponent<LevelManager>().lives;//gets the list of lives from the manager 
             Destroy(lifeList[lifeList.Count - 1]);//gets rid of the marker
@@ -150,6 +182,25 @@ public class BasicMovement : MonoBehaviour
         }
 
         transform.position += new Vector3(playerSpeed, playerJump, 0.0f);
+
+        //Adjust position of all projectiles
+        foreach (GameObject pellet in pellets)
+        {
+            pellet.transform.position += new Vector3(0.1f, 0, 0);
+
+            //Check for collision with enemies
+            foreach (GameObject roamer in pwerMng.GetComponent<PowerupManager>().enemies)
+            {
+                if (AABBCollide(pellet, roamer))
+                {
+                    pwerMng.GetComponent<PowerupManager>().enemies.Remove(roamer);
+                    Destroy(roamer);
+                    pellets.Remove(pellet);
+                    Destroy(pellet);
+                }
+            }
+            
+        }
         frames++;
     }
 
@@ -286,6 +337,11 @@ public class BasicMovement : MonoBehaviour
                     playerGrounded = false;
                 }
             }
+        }
+        //If the orb powerup has been equipped the player can fire
+        if (Input.GetKeyDown(KeyCode.W) && orbEquipped)
+        {
+            pellets.Add(Instantiate(pellet, transform.position, Quaternion.identity));
         }
 
     }
