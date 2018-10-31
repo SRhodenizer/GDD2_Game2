@@ -35,7 +35,7 @@ public class LevelManager : MonoBehaviour {
     //variables for level creation
     public GameObject terrain;//the game object for terrain
     public GameObject background;//the game object for the background image
-    int terrainNum = 5;//the amount of terrain blocks we want, for tests 2
+    int terrainNum = 2;//the amount of terrain blocks we want, for tests 2
     List<Vector3> terrainLocations = new List<Vector3>();//list of locations for the terrain in the level
     List<Vector3> terrainScale = new List<Vector3>();//list of all the terrain scales 
     Vector3 playerStart = new Vector3(); //starting point for the player
@@ -174,8 +174,9 @@ public class LevelManager : MonoBehaviour {
             }
         }
 
-        if (lvl == 1)//test level
+        if (lvl == 9001)//test level
         {
+            //
             if (themes[1].isPlaying == false)
             {
                 themes[0].Stop();
@@ -189,6 +190,8 @@ public class LevelManager : MonoBehaviour {
             bg.transform.position = new Vector3(bg.transform.position.x,bg.transform.position.y, 9);//send it to the back
             bg.transform.localScale = new Vector3(10* width, width/2.5f, 0);//makes it fit screen
             clones.Add(bg);
+            //
+
 
             //hard code the terrain positions
             terrainLocations.Add(new Vector3(-(Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi),1));
@@ -230,6 +233,70 @@ public class LevelManager : MonoBehaviour {
                 
             }
         }
+
+
+        //Level 2
+        if (lvl == 1)
+        {
+            if (themes[1].isPlaying == false)
+            {
+                themes[0].Stop();
+                themes[1].Play();
+            }
+            //moves the Camera 
+            camMain.transform.position = new Vector3(-8, 0, camMain.transform.position.z);
+
+            //sets up the level's terrain
+            GameObject bg = Instantiate(background);//makes the background image
+            bg.transform.position = new Vector3(bg.transform.position.x, bg.transform.position.y, 9);//send it to the back
+            bg.transform.localScale = new Vector3(10 * width, width / 2.5f, 0);//makes it fit screen
+            clones.Add(bg);
+
+            terrainLocations.Add(new Vector3(-(Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi), 1));
+            terrainLocations.Add(new Vector3((Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi), 1));
+
+            for (int i = 0; i < terrainNum; i++)
+            {
+                //actually spawns the cubes 
+                GameObject currTerr = Instantiate(terrain, terrainLocations[i], new Quaternion(0, 0, 0, 0));
+                if (i==0)
+                {
+                    terrainScale.Add(new Vector3(.75f, .75f, .75f)); //needs to be removed later 
+                }
+                else
+                {
+                    terrainScale.Add(new Vector3(6.5f, .75f, .75f)); //needs to be removed later 
+                }
+
+
+                //hard code the terrain scales 
+                currTerr.transform.localScale = terrainScale[i]; //sets their scale
+
+                platforms.Add(currTerr);//adds this terrain to the list 
+                clones.Add(currTerr);
+            }
+
+            //spawns the player 
+            player = Instantiate(playerPrefab);
+            player.transform.position = new Vector3(terrainLocations[0].x, (terrainLocations[0].y + (terrainScale[0].y) * 2.5f) + ((player.transform.localScale.y)), 0);//at this position
+            playerStart = new Vector3(terrainLocations[0].x, (terrainLocations[0].y + (terrainScale[0].y) * 2.5f) + ((player.transform.localScale.y)), 0);
+            player.tag = "Player";
+
+            //makes player life ui
+            int lifeNum = player.GetComponent<BasicMovement>().lives;
+            for (int i = 0; i < lifeNum; i++)
+            {
+                GameObject life = Instantiate(playerPrefab);//makes a life marker 
+                life.transform.localScale = new Vector3(1f, 1f, 1f);//makes him tiny 
+                //puts him on screen
+                life.transform.position = new Vector3((camMain.transform.position.x - (camMain.pixelWidth / Screen.dpi)) + (i * 2 * life.transform.localScale.x), (Screen.height / Screen.dpi) - 2 * life.transform.localScale.y, 0);
+                Destroy(life.GetComponent<BasicMovement>());//makes it so he doesnt move like a player
+                lives.Add(life);//add it to a list for later use 
+
+            }
+
+        }
+
 
         //controls screen
         if (lvl == int.MaxValue)
