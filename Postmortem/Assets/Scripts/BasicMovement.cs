@@ -137,6 +137,7 @@ public class BasicMovement : MonoBehaviour
                         }
                         break;
                     case "Orb":
+                        //Equips player with ability to fire
                         orbEquipped = true;
                         break;
                 }
@@ -151,6 +152,12 @@ public class BasicMovement : MonoBehaviour
         {
             orbEquipped = false;// Player loses ability to fire
 
+            //Get rid of all projectiles on screen
+            foreach (GameObject pellet in pellets)
+            {
+                Destroy(pellet);
+            }
+            pellets.Clear();
 
             lives--;//lose a life
             List<GameObject> lifeList = lvlMng.GetComponent<LevelManager>().lives;//gets the list of lives from the manager 
@@ -163,6 +170,7 @@ public class BasicMovement : MonoBehaviour
 
         if (lives <= 0)//if you're out of lives
         {
+            //Loops through enemies, powerups and projectiles to clear them from the level
             foreach (GameObject enemy in pwerMng.GetComponent<PowerupManager>().enemies)
             {
                 Destroy(enemy);
@@ -171,8 +179,11 @@ public class BasicMovement : MonoBehaviour
             {
                 Destroy(powerup);
             }
+
+            
             pwerMng.GetComponent<PowerupManager>().enemies.Clear();
             pwerMng.GetComponent<PowerupManager>().powerups.Clear();
+            
 
 
             dead = true;//you ded
@@ -192,6 +203,7 @@ public class BasicMovement : MonoBehaviour
             pellet.transform.position += new Vector3(0.1f, 0, 0);
 
             //Check for collision with enemies
+            //If enemy is shot, delete it and the projectile from the list
             foreach (GameObject roamer in pwerMng.GetComponent<PowerupManager>().enemies)
             {
                 if (AABBCollide(pellet, roamer))
