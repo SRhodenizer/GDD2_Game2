@@ -176,6 +176,7 @@ public class BasicMovement : MonoBehaviour
             dead = true;//you ded
             if (getScreen == false)
             {
+                playerFall = 0;
                 lvlMng.GetComponent<LevelManager>().LevelUp(int.MinValue);//get the you died screen
                 getScreen = true;
             }
