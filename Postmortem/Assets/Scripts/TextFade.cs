@@ -11,6 +11,7 @@ using UnityEngine;
 public class TextFade : MonoBehaviour {
 
     int switched = 0;
+    int count = 1;
 
     // Use this for initialization
     void Start () {
@@ -20,8 +21,11 @@ public class TextFade : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        count++;
+
         //when the animation is finished 
-        if (gameObject.GetComponent<TextMesh>().color.a > .9f && switched == 0)
+        if (gameObject.GetComponent<TextMesh>().color.a > .9f && switched == 0 && count % 300 == 0)
         {
             StartCoroutine("FadeOutAnim");
             switched = 1;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 /*
     *Script for handeling player movement and terrain collision detection
-    * Coded by Kevin Lin and Stephen Rhodenizer 
+    * Coded by Kevin Lin, Andrew Murphy and Stephen Rhodenizer 
     * GDD2 - Game 2 - Postmortem
     */
 

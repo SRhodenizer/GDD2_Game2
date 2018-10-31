@@ -37,16 +37,18 @@ public class LevelManager : MonoBehaviour {
     List<Vector3> terrainLocations = new List<Vector3>();//list of locations for the terrain in the level
     List<Vector3> terrainScale = new List<Vector3>();//list of all the terrain scales 
     Vector3 playerStart = new Vector3(); //starting point for the player
+    public GameObject lvlEnd;//the gameObject for completing the level
 
     public List<GameObject> platforms = new List<GameObject>();//a list for storing made terrain
 
-    List<GameObject> clones = new List<GameObject>(); //empty game object variable to put instantiated things for deletion
+    public List<GameObject> clones = new List<GameObject>(); //empty game object variable to put instantiated things for deletion
     public List<GameObject> lives = new List<GameObject>();//list of the life markers for the player 
 
     //player variable
     public GameObject playerPrefab;
     GameObject player = null;
 
+    //the current level of the game 
     int lvl = 0;
 
 	// Use this for initialization
@@ -106,7 +108,7 @@ public class LevelManager : MonoBehaviour {
                 }
             }
             
-
+            //resets the respawn bool for the player 
             if (player.transform.position.y <=  playerStart.y -.02f)
             {
                 respawn = false;
@@ -306,6 +308,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+    //respawns the player  
     public void RespawnPlayer()
     {
         BasicMovement script = player.GetComponent<BasicMovement>();
