@@ -205,7 +205,7 @@ MonoBehaviour:
   enemies: []
   spikePrefab: {fileID: 1072806497083012, guid: e1236ffcc247abb4d93c85220c0d5958,
     type: 2}
-  roamerPrefab: {fileID: 1929274651234592, guid: 8a642e707c4f1c44588e3d27e914825b,
+  roamerPrefab: {fileID: 1909690158312062, guid: 8a642e707c4f1c44588e3d27e914825b,
     type: 2}
   bouncePrefab: {fileID: 1646141439801834, guid: f1a5226a8751105409083538ec10f786,
     type: 2}
@@ -487,6 +487,12 @@ Prefab:
       propertyPath: creditLabel
       value: 
       objectReference: {fileID: 1444610992355508, guid: d16e3ffc8bca9a64696c41f76ab9fd29,
+        type: 2}
+    - target: {fileID: 114185974936218332, guid: 7cd0c8b416c790f4a86b907da6fef6e4,
+        type: 2}
+      propertyPath: lvlEnd
+      value: 
+      objectReference: {fileID: 1141816848054400, guid: 559fad5b2c8a1bb4397eb2bd490b430a,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cd0c8b416c790f4a86b907da6fef6e4, type: 2}
