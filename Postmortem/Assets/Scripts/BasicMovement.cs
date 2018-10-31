@@ -170,7 +170,7 @@ public class BasicMovement : MonoBehaviour
 
         if (lives <= 0)//if you're out of lives
         {
-            //Loops through enemies, powerups and projectiles to clear them from the level
+            //Loops through enemies and powerups to clear them from the level
             foreach (GameObject enemy in pwerMng.GetComponent<PowerupManager>().enemies)
             {
                 Destroy(enemy);
@@ -180,7 +180,6 @@ public class BasicMovement : MonoBehaviour
                 Destroy(powerup);
             }
 
-            
             pwerMng.GetComponent<PowerupManager>().enemies.Clear();
             pwerMng.GetComponent<PowerupManager>().powerups.Clear();
             
@@ -197,10 +196,13 @@ public class BasicMovement : MonoBehaviour
 
         transform.position += new Vector3(playerSpeed, playerJump, 0.0f);
 
-        //Adjust position of all projectiles
+
+
+        //Update position of all projectiles
         foreach (GameObject pellet in pellets)
         {
-            pellet.transform.position += new Vector3(0.1f, 0, 0);
+            
+            pellet.transform.position += new Vector3(0.15f, 0, 0);
 
             //Check for collision with enemies
             //If enemy is shot, delete it and the projectile from the list
@@ -214,6 +216,8 @@ public class BasicMovement : MonoBehaviour
                     Destroy(pellet);
                 }
             }
+
+                
             
         }
         frames++;
@@ -364,7 +368,7 @@ public class BasicMovement : MonoBehaviour
                 }
             }
         }
-        //If the orb powerup has been equipped the player can fire
+        //If the orb powerup has been equipped, the player can fire with W
         if (Input.GetKeyDown(KeyCode.W) && orbEquipped)
         {
             pellets.Add(Instantiate(pellet, transform.position, Quaternion.identity));
