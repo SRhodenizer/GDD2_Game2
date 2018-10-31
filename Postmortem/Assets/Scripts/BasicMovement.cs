@@ -92,25 +92,28 @@ public class BasicMovement : MonoBehaviour
         //checks if player hits a hazard
         foreach (GameObject enemy in pwerMng.GetComponent<PowerupManager>().enemies)
         {
-            
-            if (AABBCollide(gameObject, enemy))
+            if (enemy != null)
             {
-                loseLife = true;
-                //Spawns different powerup depending on hazard that killed the player
-                switch (enemy.tag)
+                if (AABBCollide(gameObject, enemy))
                 {
-                    case "Spike":
-                        pwerMng.GetComponent<PowerupManager>().SpawnBounce(transform.position);
-                        break;
-                    case "Roamer":
-                        pwerMng.GetComponent<PowerupManager>().SpawnOrb(transform.position);
-                        break;
+                    loseLife = true;
+                    //Spawns different powerup depending on hazard that killed the player
+                    switch (enemy.tag)
+                    {
+                        case "Spike":
+                            pwerMng.GetComponent<PowerupManager>().SpawnBounce(transform.position);
+                            break;
+                        case "Roamer":
+                            pwerMng.GetComponent<PowerupManager>().SpawnOrb(transform.position);
+                            break;
 
+                    }
+
+
+                    break;
                 }
-                
-                
-                break;
             }
+           
         }
 
         foreach (GameObject powerup in pwerMng.GetComponent<PowerupManager>().powerups)
@@ -199,29 +202,37 @@ public class BasicMovement : MonoBehaviour
 
 
         //Update position of all projectiles
-        foreach (GameObject pellet in pellets)
+        //foreach (GameObject pellet in pellets)
+        for(int j = 0; j < pellets.Count;j++)
         {
-            
-            pellet.transform.position += new Vector3(0.15f, 0, 0);
-
-            //Check for collision with enemies
-            //If enemy is shot, delete it and the projectile from the list
-            foreach (GameObject roamer in pwerMng.GetComponent<PowerupManager>().enemies)
+            if (pellets[j] != null)
             {
-                if (roamer.tag == "Roamer")
-                {
-                    if (AABBCollide(pellet, roamer))
-                    {
-                        pwerMng.GetComponent<PowerupManager>().enemies.Remove(roamer);
-                        Destroy(roamer);
-                        pellets.Remove(pellet);
-                        Destroy(pellet);
-                    }
-                }
-               
+                pellets[j].transform.position += new Vector3(0.15f, 0, 0);
             }
 
+            //Check for collision with enemies
+            //If enemy is shot, delete it and the projectile from the list 
+            //foreach (GameObject roamer in pwerMng.GetComponent<PowerupManager>().enemies)
+            List<GameObject> bad = pwerMng.GetComponent<PowerupManager>().enemies;
+            for (int i = 0; i < bad.Count;i++)
+            {
+                if (bad[i] != null)
+                {
+                    if (bad[i].tag == "Roamer")
+                    {
+                        if (AABBCollide(pellets[j], bad[i]))
+                        {
+                            
+                            Destroy(bad[i]);
+                            pwerMng.GetComponent<PowerupManager>().enemies.Remove(bad[i]);
+
+                            Destroy(pellets[j]);
+                            pellets.Remove(pellets[j]);
+                        }
+                    }
+                }
                 
+            }    
             
         }
         frames++;
@@ -232,15 +243,19 @@ public class BasicMovement : MonoBehaviour
     {
 
         bool result = false;
-        //sets bounds of the game objects that may or may not be colliding
-        Bounds bounds1 = g1.GetComponent<SpriteRenderer>().bounds;
-        Bounds bounds2 = g2.GetComponent<SpriteRenderer>().bounds;
-
-        //uses AABB logic to determine if the objects are colliding 
-        if (bounds1.min.x < bounds2.max.x && bounds1.max.x > bounds2.min.x && bounds1.min.y < bounds2.max.y && bounds1.max.y > bounds2.min.y)
+        if (g2 != null && g1 != null)
         {
-            result = true;
+            //sets bounds of the game objects that may or may not be colliding
+            Bounds bounds1 = g1.GetComponent<SpriteRenderer>().bounds;
+            Bounds bounds2 = g2.GetComponent<SpriteRenderer>().bounds;
+
+            //uses AABB logic to determine if the objects are colliding 
+            if (bounds1.min.x < bounds2.max.x && bounds1.max.x > bounds2.min.x && bounds1.min.y < bounds2.max.y && bounds1.max.y > bounds2.min.y)
+            {
+                result = true;
+            }
         }
+       
 
         return result;
     }

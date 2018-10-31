@@ -298,15 +298,15 @@ public class LevelManager : MonoBehaviour {
                 //hard code the terrain scales 
                 currTerr.transform.localScale = terrainScale[i]; //sets their scale
                 
-                //spawn roamer
-                spawnHazards.SpawnRoamer(new Vector3(14,-1, 1));
-
-                spawnHazards.SpawnSpike(new Vector3(26,-1.3f,1));
-                spawnHazards.SpawnSpike(new Vector3(27, -1.3f, 1));
-
                 platforms.Add(currTerr);//adds this terrain to the list 
                 clones.Add(currTerr);
             }
+
+            //spawn roamer
+            spawnHazards.SpawnRoamer(new Vector3(14, -1, 1));
+
+            spawnHazards.SpawnSpike(new Vector3(26, -1.3f, 1));
+            spawnHazards.SpawnSpike(new Vector3(27, -1.3f, 1));
 
             //spawns the player 
             player = Instantiate(playerPrefab);
@@ -325,9 +325,9 @@ public class LevelManager : MonoBehaviour {
             for (int i = 0; i < lifeNum; i++)
             {
                 GameObject life = Instantiate(playerPrefab);//makes a life marker 
-                life.transform.localScale = new Vector3(1f, 1f, 1f);//makes him tiny 
+                life.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);//makes him tiny 
                 //puts him on screen
-                life.transform.position = new Vector3(width - (i * 2 * life.transform.localScale.x), width - 2 * life.transform.localScale.y, 0);
+                life.transform.position = new Vector3(-width/6 - (i * life.transform.localScale.x), width/2 - 4 * life.transform.localScale.y, 0);
                 Destroy(life.GetComponent<BasicMovement>());//makes it so he doesnt move like a player
                 lives.Add(life);//add it to a list for later use 
 
@@ -398,6 +398,7 @@ public class LevelManager : MonoBehaviour {
                 //button that starts the game code
                 if (GUI.Button(new Rect(Screen.width / 2 - 40, Screen.height / 2, 100, 60), "Start"))
                 {
+                    spawnHazards.enemies.Clear();
                     LevelUp(1);
 
                 }
@@ -420,6 +421,7 @@ public class LevelManager : MonoBehaviour {
             //button that starts the game code
             if (GUI.Button(new Rect(Screen.width / 2 - 80, Screen.height/2 , 150, 60), "Play Again?"))
             {
+                spawnHazards.enemies.Clear();
                 LevelUp(1);
 
             }
@@ -438,6 +440,7 @@ public class LevelManager : MonoBehaviour {
             //button that starts the game code
             if (GUI.Button(new Rect(Screen.width / 2 - 80, Screen.height / 2, 150, 60), "Play Again?"))
             {
+                spawnHazards.enemies.Clear();
                 LevelUp(1);
             }
 
