@@ -300,6 +300,11 @@ public class LevelManager : MonoBehaviour {
             playerStart = new Vector3(terrainLocations[0].x, (terrainLocations[0].y + (terrainScale[0].y) * 2.5f) + ((player.transform.localScale.y)), 0);
             player.tag = "Player";
 
+            //spawns the end level object 
+            GameObject endLvl = Instantiate(lvlEnd);
+            endLvl.transform.position = new Vector3();//wherever you wanna put it 
+            endLvl.GetComponent<LevelComplete>().nextLevel = 100000000;//this ends the game
+
             //makes player life ui
             int lifeNum = player.GetComponent<BasicMovement>().lives;
             for (int i = 0; i < lifeNum; i++)
@@ -340,6 +345,20 @@ public class LevelManager : MonoBehaviour {
                 text.GetComponentsInChildren<TextMesh>()[i].text = "Game Controls";
             }
             clones.Add(text);
+        }
+
+        //win screen
+        if (lvl == 100000000)
+        {
+            Destroy(player);
+            GameObject gO = Instantiate(gameOver);
+            gO.transform.position = new Vector3(camMain.transform.position.x - camMain.pixelWidth / Screen.dpi / 4, camMain.transform.position.y / Screen.dpi / 2 + 2);
+            TextMesh[] texts = gO.GetComponentsInChildren<TextMesh>();
+            foreach (TextMesh word in texts)
+            {
+                word.text = "You Win!";
+            }
+            clones.Add(gO);
         }
 
         //death screen
@@ -394,6 +413,23 @@ public class LevelManager : MonoBehaviour {
             {
                 clones.Add(player);
                 camMain.transform.position = new Vector3(0,0,camMain.transform.position.z);
+                LevelUp(0);
+            }
+        }
+
+        //game win screen 
+        if (lvl == 100000000)
+        {
+            //button that starts the game code
+            if (GUI.Button(new Rect(Screen.width / 2 - 80, Screen.height / 2, 150, 60), "Play Again?"))
+            {
+                LevelUp(1);
+            }
+
+            if (GUI.Button(new Rect(Screen.width / 2 - 80, Screen.height / 2 + 80, 150, 60), "Return to Menu"))
+            {
+                clones.Add(player);
+                camMain.transform.position = new Vector3(0, 0, camMain.transform.position.z);
                 LevelUp(0);
             }
         }
