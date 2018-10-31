@@ -19,7 +19,7 @@ public class LevelComplete : MonoBehaviour {
     // Use this for initialization
     void Start () {
         player = GameObject.FindGameObjectWithTag("Player");
-        lvlMng = GameObject.Find("Level Manager");
+        lvlMng = GameObject.Find("LevelManager");
         script = lvlMng.GetComponent<LevelManager>();
     }
 	
@@ -49,18 +49,20 @@ public class LevelComplete : MonoBehaviour {
     //AABB collision detection
     public bool AABBCollide(GameObject g1, GameObject g2)
     {
-
         bool result = false;
-        //sets bounds of the game objects that may or may not be colliding
-        Bounds bounds1 = g1.GetComponent<SpriteRenderer>().bounds;
-        Bounds bounds2 = g2.GetComponent<SpriteRenderer>().bounds;
 
-        //uses AABB logic to determine if the objects are colliding 
-        if (bounds1.min.x < bounds2.max.x && bounds1.max.x > bounds2.min.x && bounds1.min.y < bounds2.max.y && bounds1.max.y > bounds2.min.y)
+        if (g2 != null)
         {
-            result = true;
-        }
+            //sets bounds of the game objects that may or may not be colliding
+            Bounds bounds1 = g1.GetComponent<SpriteRenderer>().bounds;
+            Bounds bounds2 = g2.GetComponent<SpriteRenderer>().bounds;
 
+            //uses AABB logic to determine if the objects are colliding 
+            if (bounds1.min.x < bounds2.max.x && bounds1.max.x > bounds2.min.x && bounds1.min.y < bounds2.max.y && bounds1.max.y > bounds2.min.y)
+            {
+                result = true;
+            }
+        }
         return result;
     }
 }

@@ -46,7 +46,7 @@ public class BasicMovement : MonoBehaviour
     //List<GameObject> enemyList;
 
     public GameObject pellet; // Transform for the projectile
-    List<GameObject> pellets; // Queue to track projectile
+    public List<GameObject> pellets; // Queue to track projectile
     private void Awake()
     {
         lvlMng = GameObject.Find("LevelManager");

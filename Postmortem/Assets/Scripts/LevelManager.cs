@@ -142,6 +142,20 @@ public class LevelManager : MonoBehaviour {
             {
                 Destroy(clone);
             }
+
+            foreach (GameObject enemy in spawnHazards.enemies)
+            {
+                Destroy(enemy);
+            }
+            
+            if (player != null)
+            {
+                foreach (GameObject pellet in player.GetComponent<BasicMovement>().pellets)
+                {
+                    Destroy(pellet);
+                }
+            }
+           
         }
         
 
@@ -283,7 +297,7 @@ public class LevelManager : MonoBehaviour {
 
                 //hard code the terrain scales 
                 currTerr.transform.localScale = terrainScale[i]; //sets their scale
-
+                
                 //spawn roamer
                 spawnHazards.SpawnRoamer(new Vector3(14,-1, 1));
 
@@ -302,8 +316,9 @@ public class LevelManager : MonoBehaviour {
 
             //spawns the end level object 
             GameObject endLvl = Instantiate(lvlEnd);
-            endLvl.transform.position = new Vector3();//wherever you wanna put it 
+            endLvl.transform.position = new Vector3(20,0,0);//wherever you wanna put it 
             endLvl.GetComponent<LevelComplete>().nextLevel = 100000000;//this ends the game
+            clones.Add(endLvl);
 
             //makes player life ui
             int lifeNum = player.GetComponent<BasicMovement>().lives;
