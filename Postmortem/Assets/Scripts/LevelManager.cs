@@ -45,6 +45,8 @@ public class LevelManager : MonoBehaviour {
 
     public List<GameObject> clones = new List<GameObject>(); //empty game object variable to put instantiated things for deletion
     public List<GameObject> lives = new List<GameObject>();//list of the life markers for the player 
+    PowerupManager spawnHazards;
+
 
     //player variable
     public GameObject playerPrefab;
@@ -62,6 +64,8 @@ public class LevelManager : MonoBehaviour {
         themes = gameObject.GetComponents<AudioSource>();
 
         width = camMain.orthographicSize * 2.0f * Screen.width / Screen.height;
+
+        spawnHazards = GameObject.Find("PowerupManager").GetComponent<PowerupManager>();
 
         LevelUp(0);//sets level to the load screen
     }
@@ -271,6 +275,9 @@ public class LevelManager : MonoBehaviour {
 
                 //hard code the terrain scales 
                 currTerr.transform.localScale = terrainScale[i]; //sets their scale
+
+                //spawn roamer
+                spawnHazards.SpawnRoamer(new Vector3((Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi) + 2, 1));
 
                 platforms.Add(currTerr);//adds this terrain to the list 
                 clones.Add(currTerr);
