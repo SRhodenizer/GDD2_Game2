@@ -61,6 +61,8 @@ public class LevelManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+        camMain.aspect = 10.0f / 6.0f;//MAS IMPORTANTE
+
         themes = gameObject.GetComponents<AudioSource>();
 
         width = camMain.orthographicSize * 2.0f * Screen.width / Screen.height;
