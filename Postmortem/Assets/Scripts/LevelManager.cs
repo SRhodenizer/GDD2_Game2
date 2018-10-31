@@ -187,7 +187,7 @@ public class LevelManager : MonoBehaviour {
             //sets up the level's terrain
             GameObject bg = Instantiate(background);//makes the background image
             bg.transform.position = new Vector3(bg.transform.position.x,bg.transform.position.y, 9);//send it to the back
-            bg.transform.localScale = new Vector3(10* width, width/4, 0);//makes it fit screen
+            bg.transform.localScale = new Vector3(10* width, width/2.5f, 0);//makes it fit screen
             clones.Add(bg);
 
             //hard code the terrain positions
@@ -209,8 +209,6 @@ public class LevelManager : MonoBehaviour {
 
                 platforms.Add(currTerr);//adds this terrain to the list 
                 clones.Add(currTerr);
-
-                
             }
 
             //spawns the player 
@@ -224,7 +222,7 @@ public class LevelManager : MonoBehaviour {
             for (int i = 0; i < lifeNum; i++)
             {
                 GameObject life = Instantiate(playerPrefab);//makes a life marker 
-                life.transform.localScale = new Vector3(.25f,.25f,.25f);//makes him tiny 
+                life.transform.localScale = new Vector3(1f,1f,1f);//makes him tiny 
                 //puts him on screen
                 life.transform.position = new Vector3((camMain.transform.position.x - (camMain.pixelWidth / Screen.dpi)) + (i *2*life.transform.localScale.x), (Screen.height / Screen.dpi) - 2*life.transform.localScale.y, 0);
                 Destroy(life.GetComponent<BasicMovement>());//makes it so he doesnt move like a player
@@ -266,7 +264,6 @@ public class LevelManager : MonoBehaviour {
             GameObject gO = Instantiate(gameOver);
             gO.transform.position = new Vector3(camMain.transform.position.x - camMain.pixelWidth / Screen.dpi / 4, camMain.transform.position.y/ Screen.dpi / 2 + 2);
             clones.Add(gO);
-            
         }
 
     }

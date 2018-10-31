@@ -248,6 +248,7 @@ public class BasicMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.D))//D key for moving right
         {
             //transform.position += new Vector3(0.1f, 0.0f, 0.0f);
+            
 
             playerSpeed += playerAccel;
             if (playerSpeed > playerMaxSpeed)
