@@ -208,13 +208,17 @@ public class BasicMovement : MonoBehaviour
             //If enemy is shot, delete it and the projectile from the list
             foreach (GameObject roamer in pwerMng.GetComponent<PowerupManager>().enemies)
             {
-                if (AABBCollide(pellet, roamer))
+                if (roamer.tag == "Roamer")
                 {
-                    pwerMng.GetComponent<PowerupManager>().enemies.Remove(roamer);
-                    Destroy(roamer);
-                    pellets.Remove(pellet);
-                    Destroy(pellet);
+                    if (AABBCollide(pellet, roamer))
+                    {
+                        pwerMng.GetComponent<PowerupManager>().enemies.Remove(roamer);
+                        Destroy(roamer);
+                        pellets.Remove(pellet);
+                        Destroy(pellet);
+                    }
                 }
+               
             }
 
                 
