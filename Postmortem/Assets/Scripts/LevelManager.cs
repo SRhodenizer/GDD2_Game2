@@ -13,6 +13,8 @@ public class LevelManager : MonoBehaviour {
     //variables for Camera movement
     public Camera camMain;
     bool respawn = false;
+    float width;//width of the screen
+    
 
     //game over screen
     public GameObject gameOver;
@@ -51,8 +53,15 @@ public class LevelManager : MonoBehaviour {
     //the current level of the game 
     int lvl = 0;
 
+    //variables for background music
+    AudioSource[] themes;
+
 	// Use this for initialization
 	void Start () {
+
+        themes = gameObject.GetComponents<AudioSource>();
+
+        width = camMain.orthographicSize * 2.0f * Screen.width / Screen.height;
 
         LevelUp(0);//sets level to the load screen
     }
@@ -133,12 +142,17 @@ public class LevelManager : MonoBehaviour {
 
         if (lvl == 0)//load screen
         {
+            if (themes[0].isPlaying == false)
+            {
+                themes[1].Stop();
+                themes[0].Play();
+            }
             //makes the load screen background and the title words appear 
             GameObject bg = Instantiate(loadScreen);
             GameObject clone = Instantiate(title);
             clones.Add(clone);
             clones.Add(bg);
-            bg.transform.localScale = new Vector3(Screen.width / 8f / Screen.dpi, Screen.height / 4f / Screen.dpi, 0);
+            bg.transform.localScale = new Vector3(width/10.0f,width/12.0f, 0);
 
 
             if (creditFade == true)//if you need to see the credits 
@@ -162,13 +176,18 @@ public class LevelManager : MonoBehaviour {
 
         if (lvl == 1)//test level
         {
+            if (themes[1].isPlaying == false)
+            {
+                themes[0].Stop();
+                themes[1].Play();
+            }
             //moves the Camera 
             camMain.transform.position = new Vector3(-8,0,camMain.transform.position.z);
 
             //sets up the level's terrain
             GameObject bg = Instantiate(background);//makes the background image
             bg.transform.position = new Vector3(bg.transform.position.x,bg.transform.position.y, 9);//send it to the back
-            bg.transform.localScale = new Vector3(100*Screen.width / Screen.dpi, 2.5f*Screen.height / Screen.dpi, 0);//makes it fit screen
+            bg.transform.localScale = new Vector3(10* width, width/4, 0);//makes it fit screen
             clones.Add(bg);
 
             //hard code the terrain positions
@@ -219,7 +238,7 @@ public class LevelManager : MonoBehaviour {
         {
             //make a background
             GameObject bg = Instantiate(controlBG);
-            bg.transform.localScale = new Vector3(Screen.width / 3 / Screen.dpi, Screen.height / 2 / Screen.dpi, 0);//makes it fit screen
+            bg.transform.localScale = new Vector3(width/4, width/4, 0);//makes it fit screen
             clones.Add(bg);
 
             //make the big controller appear 
