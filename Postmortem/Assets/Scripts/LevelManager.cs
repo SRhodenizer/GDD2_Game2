@@ -36,6 +36,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject terrain;//the game object for terrain
     public GameObject background;//the game object for the background image
     int terrainNum = 2;//the amount of terrain blocks we want, for tests 2
+    int terrainNumLvl1 = 3;
     List<Vector3> terrainLocations = new List<Vector3>();//list of locations for the terrain in the level
     List<Vector3> terrainScale = new List<Vector3>();//list of all the terrain scales 
     Vector3 playerStart = new Vector3(); //starting point for the player
@@ -258,10 +259,11 @@ public class LevelManager : MonoBehaviour {
             bg.transform.localScale = new Vector3(10 * width, width / 2.5f, 0);//makes it fit screen
             clones.Add(bg);
 
-            terrainLocations.Add(new Vector3(-(Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi), 1));
-            terrainLocations.Add(new Vector3((Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi), 1));
+            terrainLocations.Add(new Vector3(0,-3, 1));
+            terrainLocations.Add(new Vector3(14, -3, 1));
+            terrainLocations.Add(new Vector3(20, -3, 1));
 
-            for (int i = 0; i < terrainNum; i++)
+            for (int i = 0; i < terrainNumLvl1; i++)
             {
                 //actually spawns the cubes 
                 GameObject currTerr = Instantiate(terrain, terrainLocations[i], new Quaternion(0, 0, 0, 0));
@@ -271,7 +273,7 @@ public class LevelManager : MonoBehaviour {
                 }
                 else
                 {
-                    terrainScale.Add(new Vector3(6.5f, .75f, .75f)); //needs to be removed later 
+                    terrainScale.Add(new Vector3(1.5f, .75f, .75f)); //needs to be removed later 
                 }
 
 
@@ -279,7 +281,7 @@ public class LevelManager : MonoBehaviour {
                 currTerr.transform.localScale = terrainScale[i]; //sets their scale
 
                 //spawn roamer
-                spawnHazards.SpawnRoamer(new Vector3((Screen.width / Screen.dpi), -(Screen.height / 2 / Screen.dpi) + 2, 1));
+                spawnHazards.SpawnRoamer(new Vector3(18,-1, 1));
 
                 platforms.Add(currTerr);//adds this terrain to the list 
                 clones.Add(currTerr);
