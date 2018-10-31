@@ -42,11 +42,20 @@ public class Enemy : MonoBehaviour {
 
             if (Mathf.Abs(transform.position.x) > xBound)
             {
+                if (gameObject.GetComponent<SpriteRenderer>().flipX == true)
+                {
+                    gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                }
+                else
+                {
+                    gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                }
                 move = -move;
             }
         }
+        
 
-	}
+    }
 
 
     // When the enemy collides with the player

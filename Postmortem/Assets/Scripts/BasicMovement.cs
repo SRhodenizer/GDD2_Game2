@@ -10,6 +10,8 @@ using UnityEngine;
 
 public class BasicMovement : MonoBehaviour
 {
+    Animator anim;
+
 
     int frames = 0;
     int time = 0;
@@ -60,7 +62,7 @@ public class BasicMovement : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        anim = GetComponent<Animator>();
 
     }
 
@@ -248,7 +250,11 @@ public class BasicMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.D))//D key for moving right
         {
             //transform.position += new Vector3(0.1f, 0.0f, 0.0f);
-            
+            anim.SetBool("Running", true);
+            if (gameObject.GetComponent<SpriteRenderer>().flipX == true)
+            {
+                gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            }
 
             playerSpeed += playerAccel;
             if (playerSpeed > playerMaxSpeed)
@@ -260,6 +266,11 @@ public class BasicMovement : MonoBehaviour
         else if (Input.GetKey(KeyCode.A))  // A key for moving left on the screen
         {
             //transform.position += new Vector3(-0.1f, 0.0f, 0.0f);
+            anim.SetBool("Running", true);
+            if (gameObject.GetComponent<SpriteRenderer>().flipX == false)
+            {
+                gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            }
 
             playerSpeed -= playerAccel;
             if (playerSpeed < -playerMaxSpeed)
@@ -269,6 +280,7 @@ public class BasicMovement : MonoBehaviour
         }
         else
         {
+            anim.SetBool("Running", false);
             if (playerSpeed < 0)
             {
                 playerSpeed += (playerAccel + 0.01f);
