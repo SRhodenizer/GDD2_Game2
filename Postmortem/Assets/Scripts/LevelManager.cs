@@ -36,7 +36,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject terrain;//the game object for terrain
     public GameObject background;//the game object for the background image
     int terrainNum = 2;//the amount of terrain blocks we want, for tests 2
-    int terrainNumLvl1 = 6;
+    int terrainNumLvl1 = 7;
     List<Vector3> terrainLocations = new List<Vector3>();//list of locations for the terrain in the level
     List<Vector3> terrainScale = new List<Vector3>();//list of all the terrain scales 
     Vector3 playerStart = new Vector3(); //starting point for the player
@@ -276,10 +276,10 @@ public class LevelManager : MonoBehaviour {
             terrainLocations.Add(new Vector3(0,-3, 1));
             terrainLocations.Add(new Vector3(14, -3, 1));
             terrainLocations.Add(new Vector3(20, -3, 1));
-            terrainLocations.Add(new Vector3(27, -3, 1));
-            terrainLocations.Add(new Vector3(33, -3, 1));
-            terrainLocations.Add(new Vector3(40, -3, 1));
-
+            terrainLocations.Add(new Vector3(27, -7, 1));
+            terrainLocations.Add(new Vector3(37,-5, 1));
+            terrainLocations.Add(new Vector3(45, -2.5f, 1));
+            terrainLocations.Add(new Vector3(53, 0.25f, 1));
 
             for (int i = 0; i < terrainNumLvl1; i++)
             {
@@ -305,8 +305,12 @@ public class LevelManager : MonoBehaviour {
             //spawn roamer
             spawnHazards.SpawnRoamer(new Vector3(14, -1, 1));
 
-            spawnHazards.SpawnSpike(new Vector3(26, -1.3f, 1));
-            spawnHazards.SpawnSpike(new Vector3(27, -1.3f, 1));
+            spawnHazards.SpawnSpike(new Vector3(26, -5.1f, 1));
+            spawnHazards.SpawnSpike(new Vector3(27, -5.1f, 1));
+            spawnHazards.SpawnSpike(new Vector3(28, -5.1f, 1));
+            spawnHazards.SpawnSpike(new Vector3(29, -5.1f, 1));
+            spawnHazards.SpawnSpike(new Vector3(30, -5.1f, 1));
+            spawnHazards.SpawnSpike(new Vector3(46, -0.5f, 1));
 
             //spawns the player 
             player = Instantiate(playerPrefab);
@@ -316,7 +320,8 @@ public class LevelManager : MonoBehaviour {
 
             //spawns the end level object 
             GameObject endLvl = Instantiate(lvlEnd);
-            endLvl.transform.position = new Vector3(20,0,0);//wherever you wanna put it 
+            //endLvl.transform.position = new Vector3(5, 0, 0);
+            endLvl.transform.position = new Vector3(58,3,0);//wherever you wanna put it 
             endLvl.GetComponent<LevelComplete>().nextLevel = 100000000;//this ends the game
             clones.Add(endLvl);
 
